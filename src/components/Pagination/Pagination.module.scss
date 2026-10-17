@@ -6,7 +6,7 @@ $test2: white;
 
 .root {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
 
     // В библиотеки, которую мы используем в компоненте Pagination (react-paginate) стили для кнопок лучше вешать внутри элементов li на ссылки a.
     // Чтобы понять какие элементы создает эта библиотека нужно открыть окно просмотра элементов HTML в браузере.
