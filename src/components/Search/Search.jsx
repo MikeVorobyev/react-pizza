@@ -1,55 +1,33 @@
-// HTMLCollection — это динамическая структура данных, которая обновляется каждый раз, 
-// когда меняется количество элементов, полученных с помощью соответствующего метода.
-
-// NodeList — это статическая структура данных, которая не меняется после формирования, 
-// даже если меняется HTML-код страницы.
-
-import debounce from 'lodash.debounce'        // debounce() — это функция, которая «откладывает» вызов другой функции до того момента, когда с последнего вызова
-                                              // пройдёт определённое количество времени.
+import debounce from 'lodash.debounce'
 import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
 import React, { useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearchValueFrontEnd } from '../../redux/slices/filterSlice'
 
-
-
-
 const Search = () => {
   const { searchValueFrontEnd } = useSelector(state => state.filterReducer)
   const dispatch = useDispatch()
+  const inputRef = useRef()
+  const { setSearchValue } = React.useContext(SearchContext)
 
-  const inputRef = useRef() // useRef будет содержать в себе ссылку на дщанные, которые могут изменяться динамически. Так же у интересующего тега нужно в пропсы прописать ref={inputRef},
-                            // где само название параметра "ref" изменять нельзя, а вот название, находящееся внутри фигурных скобок мы придумываем сами когда создаем
-                            // константу const inputRef = useRef()
-
-  const { setSearchValue } = React.useContext(SearchContext)             // Для того, чтобы пользоваться контекстом, который мы создали в App.js, необходимо использовать хук useContext,
-                                                                         // куда в скобки мы передаем название нашей переменной, созданной в App.js, а в фигурные скобки предаем
-                                                                         // searchValue, setSearchValue, которые распологаются в объекте в свойстве value в компоненте SearchContext.Provide
-
-  function onClickCloseIcon() { // При нажатии на крестик очистит input и поставит снова фокус внутрь input
+  function onClickCloseIcon() {
     setSearchValue('')
     dispatch(setSearchValueFrontEnd(''))
-    inputRef.current.focus() // Способ через react найти нужный дом-элемент и обратится к нему через свойство current
-
-  //----------------------------------------------------------------- Способ через JavaScript(не рекомендуется в react) ------------------------------------------------------------------
-  // document.getElementsByClassName(styles.inputSearch).item(0).focus() // С помощью метода item.(), с указанным в скобках индексом, можно получить сам искомый элемент
-                                                                          // разметки из HTMLCollection. А метод focus() поставит фокус внутрь input
-  //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    inputRef.current.focus()
   }
 
-  
-  const debounceInput = useCallback( 
+  const debounceInput = useCallback(
     debounce((str) => {
       setSearchValue(str)
-    }, 400),[setSearchValue]
+    }, 400),
+    [setSearchValue] // <-- ИСПРАВЛЕНИЕ: добавили зависимость
   )
 
   const onChangeInput = (elem) => {
     debounceInput(elem)
     dispatch(setSearchValueFrontEnd(elem))
   }
-
 
   return (
     <div className={styles.root}>
@@ -60,7 +38,6 @@ const Search = () => {
             <path d="M31.133,32.963c-1.589,0.913-3.873,0.791-6.854-0.363c-2.456-0.918-4.541-2.131-6.257-3.637    c-2.097-1.84-3.291-3.845-3.581-6.012C19.638,25.488,25.202,28.826,31.133,32.963z"/>
             <path d="M91.741,65.298c1.08,0.948,1.628,2.245,1.646,3.892c0.016,1.646-0.491,3.057-1.522,4.232    c-1.088,1.239-2.525,1.947-4.311,2.123c-1.547,0.16-2.776-0.075-3.685-0.704L53.183,54.82c-1.156-0.733-1.474-2.165-0.953-4.296    c0.468-2.007,1.442-3.853,2.92-5.537c1.004-1.144,2.281-1.541,3.832-1.192L87.85,62.81L91.741,65.298z"/>
         </svg>
-
         <input 
             ref={inputRef}
             className={styles.inputSearch}  
@@ -68,13 +45,12 @@ const Search = () => {
             onChange={(elem) => onChangeInput(elem.target.value)}
             value={searchValueFrontEnd}
         /> 
-
-        {searchValueFrontEnd && <svg onClick={() => onClickCloseIcon()} id={styles.closeIconID} height="24" width="24"  viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M19.0710678,4.92893219 L4.92893219,19.0710678 M19.0710678,19.0710678 L4.92893219,4.92893219" strokeWidth="2"/>
-                                </svg>
+        {searchValueFrontEnd && 
+          <svg onClick={onClickCloseIcon} id={styles.closeIconID} height="24" width="24" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.0710678,4.92893219 L4.92893219,19.0710678 M19.0710678,19.0710678 L4.92893219,4.92893219" strokeWidth="2"/>
+          </svg>
         }
     </div>
   )
 }
-
 export default Search

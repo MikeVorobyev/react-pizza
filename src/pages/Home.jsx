@@ -35,7 +35,6 @@ const Home = () => {
 
       const res = await axios.get(url);
       
-      // БЕЗОПАСНОЕ извлечение данных: работает и если сервер вернул массив, и если объект {items, total}
       const responseData = res.data;
       const itemsArray = Array.isArray(responseData) ? responseData : (responseData?.items || []);
       const totalItems = responseData?.total !== undefined ? responseData.total : itemsArray.length;
