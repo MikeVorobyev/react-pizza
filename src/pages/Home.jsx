@@ -40,7 +40,12 @@ const Home = () => {
       const totalItems = responseData?.total !== undefined ? responseData.total : itemsArray.length;
 
       dispatch(setPizzasOnBackEnd(itemsArray));
-      dispatch(setPage({ ...pageInitObj, allItemsFromServer: totalItems }));
+      dispatch(setPage({ 
+        pageCount: pageInitObj.pageCount, 
+        limitItemsOnPage: pageInitObj.limitItemsOnPage, 
+        allItemsFromServer: totalItems 
+      }));
+      
       setResError(true);
     } catch (err) {
       console.error("Ошибка загрузки пицц:", err);

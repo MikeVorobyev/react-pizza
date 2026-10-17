@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce'
 import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
-import React, { useCallback, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearchValueFrontEnd } from '../../redux/slices/filterSlice'
 
@@ -17,11 +17,11 @@ const Search = () => {
     inputRef.current.focus()
   }
 
-  const debounceInput = useCallback(
-    debounce((str) => {
+  const debounceInput = useMemo(
+    () => debounce((str) => {
       setSearchValue(str)
     }, 400),
-    [setSearchValue] // <-- ИСПРАВЛЕНИЕ: добавили зависимость
+    [setSearchValue]
   )
 
   const onChangeInput = (elem) => {
