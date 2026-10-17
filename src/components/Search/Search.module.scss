@@ -1,0 +1,34 @@
+.root {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
+    border-radius: 15px;
+    max-width: 750px;
+    width: 100%;
+    align-items: center;
+    padding: 0px 12px;
+    min-height: 51px;
+
+    #searchIconID {
+        color: rgba(0, 0, 0, 0.5);
+        width: 10%;
+        height: 10%;
+        margin-right: 10px;
+    }
+
+    .inputSearch {
+        border: none;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    #closeIconID {
+        color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+    #closeIconID:active {
+        color: rgba(0, 0, 0, 0.7);
+        transform: translateY(1px);
+    }
+}
