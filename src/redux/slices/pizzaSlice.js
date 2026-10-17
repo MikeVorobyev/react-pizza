@@ -1,10 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-// const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async () => {
-//       const response = await userAPI.fetchById(userId)
-//       return response.data
-//     },
-//   )
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     pizzasOnBackEnd: []

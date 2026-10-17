@@ -42,7 +42,7 @@ const Search = () => {
   const debounceInput = useCallback( 
     debounce((str) => {
       setSearchValue(str)
-    }, 400),[]
+    }, 400),[setSearchValue]
   )
 
   const onChangeInput = (elem) => {
