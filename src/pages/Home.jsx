@@ -56,6 +56,7 @@ const Home = () => {
     }
   }, [categoryID, popupSort.sort, orderFlag, search, pageInitObj.pageCount, pageInitObj.limitItemsOnPage, dispatch]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     const category = searchParams.get('category');
     const page = searchParams.get('page');
@@ -68,7 +69,7 @@ const Home = () => {
         sortBy: sortBy !== null ? sortBy : undefined
       }));
     }
-  }, [dispatch, searchParams]);
+  }, []);
 
   React.useEffect(() => {
     const queryString = qs.stringify({
