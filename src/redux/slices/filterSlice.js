@@ -33,9 +33,23 @@ const filterSlice = createSlice({
         },
 
         setFilters(state, action) {
-            state.categoryID = Number(action.payload.category)
-            state.pageInitObj.pageCount = +action.payload.page
-            state.popupSort.sort = action.payload.sortBy
+            if (action.payload.category !== undefined) {
+                state.categoryID = Number(action.payload.category)
+            }
+            if (action.payload.page !== undefined) {
+                state.pageInitObj.pageCount = Number(action.payload.page)
+            }
+            if (action.payload.sortBy !== undefined) {
+                state.popupSort.sort = action.payload.sortBy
+
+                if (action.payload.sortBy === 'price') {
+                    state.popupSort.name = 'цене'
+                } else if (action.payload.sortBy === 'title') {
+                    state.popupSort.name = 'алфавиту'
+                } else {
+                    state.popupSort.name = 'популярности'
+                }
+            }
         },
         
         setSearchValueFrontEnd(state, action) {

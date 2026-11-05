@@ -6,14 +6,15 @@ import Sort from "../components/Sort";
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from "../components/Pagination";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { SearchContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
-import { setPage } from "../redux/slices/filterSlice";
+import { setPage, setFilters } from "../redux/slices/filterSlice";
 import { setPizzasOnBackEnd } from "../redux/slices/pizzaSlice";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams(); 
   const { searchValue } = React.useContext(SearchContext);
   const { categoryID, popupSort, pageInitObj } = useSelector(state => state.filterReducer);
   const { pizzasOnBackEnd } = useSelector(state => state.pizzaReducer);
@@ -54,6 +55,20 @@ const Home = () => {
       setIsLoading(false);
     }
   }, [categoryID, popupSort.sort, orderFlag, search, pageInitObj.pageCount, pageInitObj.limitItemsOnPage, dispatch]);
+
+  React.useEffect(() => {
+    const category = searchParams.get('category');
+    const page = searchParams.get('page');
+    const sortBy = searchParams.get('sortBy');
+
+    if (category !== null || page !== null || sortBy !== null) {
+      dispatch(setFilters({
+        category: category !== null ? category : undefined,
+        page: page !== null ? page : undefined,
+        sortBy: sortBy !== null ? sortBy : undefined
+      }));
+    }
+  }, []);
 
   React.useEffect(() => {
     const queryString = qs.stringify({
