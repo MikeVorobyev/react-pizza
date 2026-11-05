@@ -23,19 +23,21 @@ const filterSlice = createSlice({
         setCategoriesID(state, action) {
             state.categoryID = action.payload
         },
+
         setPopupSort(state, action) {
             state.popupSort = action.payload
         },
+
         setPage(state, action) {
             state.pageInitObj = action.payload
         },
+
         setFilters(state, action) {
             state.categoryID = Number(action.payload.category)
-            state.pageInitObj.pageCount = +action.payload.page // Вместо преобразования строки в число с помощью "Number(action.payload.page)", которое называется "явное преобразование",
-                                                               // можно использовать унарный оператор "плюс +" для превращения строки в число ,
-                                                               // которое называется "НЕявное преобразование". Пример НЕявного преобразования: "+action.payload.page"
+            state.pageInitObj.pageCount = +action.payload.page
             state.popupSort.sort = action.payload.sortBy
         },
+        
         setSearchValueFrontEnd(state, action) {
             state.searchValueFrontEnd = action.payload
         }
