@@ -68,7 +68,7 @@ const Home = () => {
         sortBy: sortBy !== null ? sortBy : undefined
       }));
     }
-  }, []);
+  }, [dispatch, searchParams]);
 
   React.useEffect(() => {
     const queryString = qs.stringify({
