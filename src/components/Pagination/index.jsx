@@ -35,17 +35,17 @@ const Pagination = () => {
   
   return (
     <ReactPaginate
-    className={styles.root}
-    breakLabel="..."
-    nextLabel={iconArrowRight}
-    previousLabel={iconArrowLeft}
-    onPageChange={(event) => {
+      className={styles.root}
+      breakLabel="..."
+      nextLabel={iconArrowRight}
+      previousLabel={iconArrowLeft}
+      onPageChange={(event) => {
       dispatch(setPage({...pageInitObj, pageCount: event.selected + 1}))
     }} // Номер страницы, который мы меняем мышкой, это число отправляется потом на сервер
-    pageRangeDisplayed={1}
-    pageCount={Math.ceil(pageInitObj.allItemsFromServer / pageInitObj.limitItemsOnPage)} // Количество страниц
-    renderOnZeroPageCount={null}
-    forcePage={pageInitObj.pageCount - 1} // Вот в этом параметре можно передать текующую страницу на которой мы находимся, чтобы она подсвечивалась активным классом 'select'
+      pageRangeDisplayed={1}
+      pageCount={Math.ceil(pageInitObj.allItemsFromServer / pageInitObj.limitItemsOnPage)} // Количество страниц
+      renderOnZeroPageCount={null}
+      forcePage={pageInitObj.pageCount - 1} // Вот в этом параметре можно передать текующую страницу на которой мы находимся, чтобы она подсвечивалась активным классом 'select'
   />
   )
 }

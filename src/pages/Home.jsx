@@ -1,72 +1,72 @@
-import React from "react";
-import axios from "axios";
-import qs from "qs";
-import Categories from "../components/Categories";
-import Sort from "../components/Sort";
-import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from "../components/Pagination";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { SearchContext } from "../App";
-import { useDispatch, useSelector } from "react-redux";
-import { setPage, setFilters } from "../redux/slices/filterSlice";
-import { setPizzasOnBackEnd } from "../redux/slices/pizzaSlice";
+import React from "react"
+import axios from "axios"
+import qs from "qs"
+import Categories from "../components/Categories"
+import Sort from "../components/Sort"
+import PizzaBlock from '../components/PizzaBlock/PizzaBlock'
+import Skeleton from '../components/PizzaBlock/Skeleton'
+import Pagination from "../components/Pagination"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { SearchContext } from "../App"
+import { useDispatch, useSelector } from "react-redux"
+import { setPage, setFilters } from "../redux/slices/filterSlice"
+import { setPizzasOnBackEnd } from "../redux/slices/pizzaSlice"
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams(); 
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { searchValue } = React.useContext(SearchContext);
-  const { categoryID, popupSort, pageInitObj } = useSelector(state => state.filterReducer);
-  const { pizzasOnBackEnd } = useSelector(state => state.pizzaReducer);
-  const dispatch = useDispatch();
+  const { categoryID, popupSort, pageInitObj } = useSelector(state => state.filterReducer)
+  const { pizzasOnBackEnd } = useSelector(state => state.pizzaReducer)
+  const dispatch = useDispatch()
   
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [resError, setResError] = React.useState(true); // true = ошибки нет
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [resError, setResError] = React.useState(true)
 
-  const orderFlag = popupSort.rotateSortSVG === 'rotate_180' ? 'desc' : 'asc';
-  const search = searchValue ? `&title=${searchValue}` : '';
+  const orderFlag = popupSort.rotateSortSVG === 'rotate_180' ? 'desc' : 'asc'
+  const search = searchValue ? `&title=${searchValue}` : ''
 
   const fetchData = React.useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const baseUrl = 'https://pizza-api.megamancartman01.workers.dev/';
       const url = categoryID === 0
         ? `${baseUrl}?page=${pageInitObj.pageCount}&limit=${pageInitObj.limitItemsOnPage}&sortBy=${popupSort.sort}&order=${orderFlag}${search}`
-        : `${baseUrl}?category=${categoryID}&page=${pageInitObj.pageCount}&limit=${pageInitObj.limitItemsOnPage}&sortBy=${popupSort.sort}&order=${orderFlag}${search}`;
+        : `${baseUrl}?category=${categoryID}&page=${pageInitObj.pageCount}&limit=${pageInitObj.limitItemsOnPage}&sortBy=${popupSort.sort}&order=${orderFlag}${search}`
 
-      const res = await axios.get(url);
+      const res = await axios.get(url)
       
-      const responseData = res.data;
-      const itemsArray = Array.isArray(responseData) ? responseData : (responseData?.items || []);
-      const totalItems = responseData?.total !== undefined ? responseData.total : itemsArray.length;
+      const responseData = res.data
+      const itemsArray = Array.isArray(responseData) ? responseData : (responseData?.items || [])
+      const totalItems = responseData?.total !== undefined ? responseData.total : itemsArray.length
 
-      dispatch(setPizzasOnBackEnd(itemsArray));
+      dispatch(setPizzasOnBackEnd(itemsArray))
       dispatch(setPage({ 
         pageCount: pageInitObj.pageCount, 
         limitItemsOnPage: pageInitObj.limitItemsOnPage, 
         allItemsFromServer: totalItems 
-      }));
+      }))
       
-      setResError(true);
+      setResError(true)
     } catch (err) {
-      console.error("Ошибка загрузки пицц:", err);
-      setResError(false);
+      console.error("Ошибка загрузки пицц:", err)
+      setResError(false)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [categoryID, popupSort.sort, orderFlag, search, pageInitObj.pageCount, pageInitObj.limitItemsOnPage, dispatch]);
+  }, [categoryID, popupSort.sort, orderFlag, search, pageInitObj.pageCount, pageInitObj.limitItemsOnPage, dispatch])
 
   React.useEffect(() => {
-    const category = searchParams.get('category');
-    const page = searchParams.get('page');
-    const sortBy = searchParams.get('sortBy');
+    const category = searchParams.get('category')
+    const page = searchParams.get('page')
+    const sortBy = searchParams.get('sortBy')
 
     if (category !== null || page !== null || sortBy !== null) {
       dispatch(setFilters({
         category: category !== null ? category : undefined,
         page: page !== null ? page : undefined,
         sortBy: sortBy !== null ? sortBy : undefined
-      }));
+      }))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -78,14 +78,14 @@ const Home = () => {
       sortBy: popupSort.sort,
     });
     navigate(`?${queryString}`);
-  }, [categoryID, pageInitObj.pageCount, popupSort.sort, navigate]);
+  }, [categoryID, pageInitObj.pageCount, popupSort.sort, navigate])
 
   React.useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
-  }, [fetchData]);
+  }, [fetchData])
 
-  const skeletons = [...new Array(pageInitObj.limitItemsOnPage)].map((_, i) => <Skeleton key={i} />);
+  const skeletons = [...new Array(pageInitObj.limitItemsOnPage)].map((_, i) => <Skeleton key={i} />)
 
   return (
     <>
@@ -108,7 +108,7 @@ const Home = () => {
       </div>
       {resError === false ? null : <Pagination />}
     </>
-  );
+  )
 }
 
-export default Home;
+export default Home

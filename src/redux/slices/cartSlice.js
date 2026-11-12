@@ -34,8 +34,8 @@ const cartSlice = createSlice({
         plusItem(state, action) {
             const findItem = findItemById(state.items, action.payload)
             
-            // Защита: если элемент не найден, просто выходим из функции
-            if (!findItem) return 
+            // Если элемент не найден, выходим из функции
+            if (!findItem) return
 
             findItem.count++
             state.totalPrice = totalPriceRecalculate(state.items)
