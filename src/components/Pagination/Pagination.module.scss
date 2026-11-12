@@ -1,15 +1,10 @@
 @import '../../scss/variables';
 
-$test: $orange;
-$test2: white;
-
-
 .root {
     display: flex;
+    align-items: center;
     justify-content: flex-start;
-
-    // В библиотеки, которую мы используем в компоненте Pagination (react-paginate) стили для кнопок лучше вешать внутри элементов li на ссылки a.
-    // Чтобы понять какие элементы создает эта библиотека нужно открыть окно просмотра элементов HTML в браузере.
+    gap: 5px;
 
     li:not(:first-child):not(:last-child) a {
         display: flex;
@@ -19,76 +14,55 @@ $test2: white;
         font-weight: 600;
         width: 50px;
         height: 50px;
-        padding: 10px;
-        margin: 5px;
         border: 1px solid $orange;
-        border-radius: 100%;
+        border-radius: 50%;
+        color: $orange;
         cursor: pointer;
         user-select: none;
-    }
+        transition: all 0.2s ease-in-out;
 
-    li:not(:first-child):not(:last-child) a:hover {
-        background: $orange;
-        color: white;
-        transition: 0.3s;
+        &:hover {
+            background: $orange;
+            color: white;
+        }
     }
 
     li:active {
         transform: translateY(1px);
     }
 
-
-
-    // Ключевое слово :global selector используется в модулях css для указания того, что область действия класса не должна ограничиваться компонентом, 
-    // в котором он определен. Этот селектор позволяет использовать класс глобально в приложении, а не только внутри определенного компонента. Допустим, 
-    // у вас есть .is-global-class класс, определенный в файле модуля CSS, вы можете использовать :global(.is-global-class), 
-    // чтобы применить этот класс к элементу и сделать его доступным глобально.
-
-    // Селектор .selected(аналог классса active) создается библиотекой react-paginate. И чтобы достучаться до этого внешнего класа необходимо использовать селектор :global
-
     :global {
-        a {
-            color: $orange;
-        }
-        .selected {
-            a {
-            background-color: $orange;
-            color: white;
-            }
-        }
-
+        .selected a,
         .active a {
-            background-color: $test;
-            color: $test2;
+            background-color: $orange !important;
+            color: white !important;
+            border-color: $orange;
         }
     }
 
-    @media(max-width: 768px) {
+    .iconArrow {
+        display: flex;
+        align-items: center;
         justify-content: center;
-        scale: 80%;
+        filter: brightness(96%);
+        cursor: pointer;
     }
-}
 
+    .iconArrowSVG {
+        display: block;
+        width: 32px;
+        height: 36px;
+        transition: 0.2s ease;
 
-#iconArrowColorID {
-    color: white;
-    stroke: $orange;
-    cursor: pointer;
-}
+        &:hover {
+            transform: scale(1.15);
+            filter: brightness(115%);
+        }
+    }
 
-#iconArrowRotateID {
-    transform: scale(-1, 1);
-}
-
-.iconArrow {
-    transform: translateY(5px);
-}
-
-.iconArrowSVG {
-    scale: 120%;
-}
-
-.iconArrowSVG:hover {
-    scale: 125%;
-    transition: 0.1s;
+    @media (max-width: 768px) {
+        justify-content: center;
+        transform: scale(0.8);
+        transform-origin: center;
+    }
 }

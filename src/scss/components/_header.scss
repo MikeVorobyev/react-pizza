@@ -43,9 +43,10 @@
 
     p {
       color: #7b7b7b;
+      text-wrap: pretty;
 
-      @media (max-width: 645px) {
-        font-size: inherit;
+      @media(max-width: 1200px) {
+        font-size: 14px;
       }
     }
   }
